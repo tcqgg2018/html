@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+    <head>
+        <!--meta标签-->
+        <meta charset="utf-8"/>
+        <meta name="description" content="这是小谭的学习笔记"/>
+        <meta name = "author" content="小谭"/>
+        <meta name= "keywords" content="小谭,html,学习"/>
+        <meta name="viewport" content="width=device-width, initial-scale= 1.0"/>
+        <title>小谭的Blogger</title>
+        <style type="text/css">
+        /* CSS styles here... */
+            
+        </style>
+    
+    </head>
+    <body>
+      <h1>小谭的日常Blogger</h1>
+      <p>标题</p>
+      <input type="text" id="title"/>
+      <p>内容</p>
+      <textarea id="content" rows="10" ></textarea>
+      <button id="btn">发布</button>
+ 
+      <div id="list">
+          <div class="article">
+             <hr/> <h2>今天天气真好</h2>
+              <p>排队买早餐，有人从背后拍了我一下，我回头一看，是俩姑娘，其中一个害羞地笑了笑说：“不好意思啊，认错人了。”
+我回过头去，然后隐隐约约地听见其中一个姑娘说：“帅啥啊，那么丑…”</p>
+          </div>
+      </div>
+      
+      <script>
+          //Blogger
+var title =document.getElementById("title");
+var content = document.getElementById("content");
+var btn = document.getElementById("btn");
+var list= document.getElementById("list");
+
+btn.addEventListener("click", function(){
+    //console.log(content.value);
+    
+    list.innerHTML = list.innerHTML + `
+   <hr/> <div class="article">
+        <h2>${title.value}</h2>
+        <p>${content.value}</p>
+        
+    </div>
+    `;
+    title.value = "";
+    content.value = "";
+})
+      </script>
+  
+    </body>
+</html> 
+    
