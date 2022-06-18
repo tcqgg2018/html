@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+    <head>
+<!--meta标签-->
+<meta charset="utf-8"/>
+<meta name="description" content="这是小谭的学习笔记"/>
+<meta name = "author" content="小谭"/>
+<meta name= "keywords" content="小谭,html,学习"/>
+<meta name="viewport" content="width=device-width, initial-scale= 1.0"/>
+<title>大超的网站</title>
+<style type="text/css">
+        /* CSS styles here... */
+        
+strong{
+    background-color:rgba(0,0,0,0.1);
+   color:#FF4500;
+   font-size:20px;
+   
+} 
+input{
+    background-color:rgba(0,0,0,0.1);
+      width:200px; 
+      height:25px;
+      font-size:25px;
+      color:#0000FF;      
+}
+button{
+    rgba(0,0,0,0.1);
+    font-size:20px;
+ }
+ a{
+     font-size:18px;
+     color:#000000;
+     font-family: "宋体";
+ }
+ </style>
+        <body style="background-color: #FFFFFF";>
+<h1 style ="color:red;">涂布产量计算器</h1>
+<strong>型🔋号 </strong>
+<dt>
+  <input type = "text" id="model" />
+  <br/>
+  <strong>总产量: </strong>
+  <dt>
+    <input type = "text" id = "yield1"/>
+    <dt>
+      <strong>分条数</strong>
+      <br />
+      <input type ="text" id = "num1" placeholder="如: 448/32 或 14"/>
+      <dt>
+        <strong>单片长度</strong>
+        <dt>
+          <input type="text" id ="length1" placeholder="如: 764+47 或 811"/>
+          <dt>
+            <strong>合格率(%)</strong>
+            <input style= width:130px height:25px font-size:25px;type ="text" id ="percentage" placeholder="默认: 100%"/>
+            <dt>
+              <strong>每卷不超过</strong>
+              <input style= width:130px height:25px font-size:25px type="text" id="number" placeholder="默认: 380米"/>
+              <dt>
+                <br/>
+                <button id="btn" style="opacity:0.6; border-radius:45px 45px 45px 45px; width:80px; height:80px; background-color: blue;color:green;">计算🧮</button>
+                <hr/>
+                <button id="bt" style= "float: right;" onclick="copyFn(this)">复制</button>
+                <div id ="list">
+                  <div class="article" ></div>
+                  
+                </div>
+              
+              <script >
+// 涂布产量 
+// author: 大超
+//添加复制按钮: 2022-06-16 14:26
+// 更新记录: 2022-06-12 08:31
+
+//涂布产量 
+
+
+var model = document.getElementById("model");
+var yield1 = document.getElementById("yield1");
+var num1 = document.getElementById("num1");
+var percentage = document.getElementById("percentage");
+var length1 = document.getElementById("length1");
+var number = document.getElementById("number");
+var btn = document.getElementById("btn");
+var list = document.getElementById("list");
+//var bt = document.getElementById("bt");
+
+Date.prototype.Format = function (fmt) {
+    var o = {
+        "M+": this.getMonth() + 1, 
+        "d+": this.getDate(), 
+        "H+": this.getHours(), 
+        "m+": this.getMinutes(), 
+        "s+": this.getSeconds(), 
+       
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
+/*function handle_click(element){
+    //alert("让你点还真的点啊🤪😜");
+    element.innerText="复制成功";
+    element.style.color = "red";
+}*/
+
+btn.addEventListener("click",function(){
+    if(percentage.value==""){
+        percentage.value=100;
+    }
+    if(number.value==""){
+        number.value=380;
+    }
+    //总大片数
+    var pieces = Math.ceil(eval(yield1.value)/Math.round(eval(num1.value))*parseFloat(percentage.value)/100);    
+    //总米数
+    var length2 =     Math.ceil(pieces*eval(length1.value)/1000);
+    //console.log(eval(length1.value))
+    //总卷数
+    var roll = Math.ceil(length2/number.value);
+    //每卷米数
+    var rollm=Math.ceil(length2/roll);
+    //每卷片数
+    var rolls = Math.ceil(pieces/roll);
+    
+    var num_random = ((Math.random()*3+4).toFixed(1))/1000;
+    var scraps = Math.ceil(eval(yield1.value)*num_random);
+    var scrap = Math.ceil(scraps/Math.round(eval(num1.value)))*Math.round(eval(num1.value));
+    var scrap_rate = (scrap/eval(yield1.value)*100).toFixed(2);
+    //var listed = [...Array(roll).keys()].map(val =>val +1).map(val => val * rolls);
+    //var result = listed.join("➟");
+    /*var result = listed.fotEach(function(index, obj){
+        return (index,obj);
+    });*/
+    //var list = [...Array(roll).keys()].map(val => val * rolls);
+
+    //console.log(scraps);
+    
+    /*function fun(){
+        for(var i=1;i<=roll;i++){
+            console.log(rolls*i);
+        }
+    }*/
+    
+    
+    list.innerHTML = list.innerHTML + `
+     <div class="article">
+        <h3>【型🔋号】${model.value}</h3>
+        <dt><a>【每卷片数】${rolls} 片 x ${roll} 卷</a>
+        <dt><a>【每卷米数】${rollm} 米</a>
+        <dt><a>【总米数】${length2} 米</a>
+        <dt><a>【输入值】 (${yield1.value}) pcs ➽ ${Math.round(eval(num1.value))} 条 ➽ (${length1.value}) mm ➽ ${percentage.value}%</a>
+        <dt><a>【分卷列表】: [${result}]</a>
+        <!--dt><br/><a>【报废清单🚮】</a>
+      <dt><a>【总大片数】${pieces} 片</a>
+       <dt><a>【总产量】${eval(yield1.value)} pcs</a>
+        <dt><a>【分条数】${Math.round(eval(num1.value))} 条</a>
+       <dt><a>【报废数】${scrap} pcs</a>
+       <dt><a>【报废率】${scrap_rate}%</a-->
+        
+                 
+    <p style=color:#F00056;font-size:20px>❤️⏰ ${new Date().Format("yyyy-MM-dd HH:mm:ss❤️\n")}</p>
+    </div>`;
+    model.value = "";
+    yield1.value = "";
+    num1.value="";
+   percentage.value="";
+    length1.value="";
+    number.value="";
+})
+    
+function copyFn(element){
+    var val =window.getSelection().selectAllChildren(list);
+      document.execCommand("Copy");
+        element.innerText="复制成功";
+        element.style.color = "red";
+}
+
+
+     
+              </script>
+          </body>
+    </html>
